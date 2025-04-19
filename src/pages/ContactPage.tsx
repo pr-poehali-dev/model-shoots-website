@@ -13,32 +13,40 @@ const ContactPage = () => {
           </p>
         </div>
 
-        <Card className="p-8 shadow-md">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
-              <MessageCircle size={32} className="text-primary" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <img
+            src="https://source.unsplash.com/random/600x800?model,portrait"
+            alt="Модельная фотография"
+            className="w-full h-80 md:h-auto object-cover rounded-lg"
+          />
+          
+          <Card className="p-8 shadow-md">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
+                <MessageCircle size={32} className="text-primary" />
+              </div>
+              
+              <h2 className="text-2xl font-semibold mb-4">Наш Telegram</h2>
+              
+              <p className="text-muted-foreground mb-8">
+                Мы всегда на связи в Telegram. Напишите нам для получения консультации
+                или чтобы договориться о съёмке.
+              </p>
+              
+              <Button asChild size="lg" className="gap-2">
+                <a 
+                  href="https://t.me/vocoders" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-lg"
+                >
+                  <MessageCircle size={20} />
+                  t.me/vocoders
+                </a>
+              </Button>
             </div>
-            
-            <h2 className="text-2xl font-semibold mb-4">Наш Telegram</h2>
-            
-            <p className="text-muted-foreground mb-8">
-              Мы всегда на связи в Telegram. Напишите нам для получения консультации
-              или чтобы договориться о съёмке.
-            </p>
-            
-            <Button asChild size="lg" className="gap-2">
-              <a 
-                href="https://t.me/vocoders" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-lg"
-              >
-                <MessageCircle size={20} />
-                t.me/vocoders
-              </a>
-            </Button>
-          </div>
-        </Card>
+          </Card>
+        </div>
 
         <div className="mt-12 space-y-6">
           <h2 className="text-2xl font-semibold">Часто задаваемые вопросы</h2>
@@ -68,6 +76,24 @@ const ContactPage = () => {
               </p>
             </div>
           </div>
+        </div>
+        
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <img 
+            src="https://source.unsplash.com/random/300x300?model,fashion" 
+            alt="Модная фотография"
+            className="w-full aspect-square object-cover rounded-md"
+          />
+          <img 
+            src="https://source.unsplash.com/random/300x300?model,photoshoot" 
+            alt="Процесс съёмки"
+            className="w-full aspect-square object-cover rounded-md"
+          />
+          <img 
+            src="https://source.unsplash.com/random/300x300?model,studio" 
+            alt="Студийная съёмка"
+            className="w-full aspect-square object-cover rounded-md md:col-span-1 col-span-2"
+          />
         </div>
       </div>
     </div>

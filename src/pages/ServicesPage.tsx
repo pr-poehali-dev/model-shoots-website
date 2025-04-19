@@ -7,7 +7,7 @@ const services = {
   cards: {
     title: 'Модельные визитки',
     description: 'Профессиональные фотосъёмки для создания модельных визиток и портфолио',
-    image: '/placeholder.svg',
+    image: 'https://source.unsplash.com/random/1200x800?model,portfolio',
     features: [
       'Съёмка в студии с профессиональным оборудованием',
       'Подбор образа и стиля',
@@ -20,7 +20,7 @@ const services = {
   videos: {
     title: 'Видеоролики',
     description: 'Создание качественных рекламных и презентационных видеороликов',
-    image: '/placeholder.svg',
+    image: 'https://source.unsplash.com/random/1200x800?model,video',
     features: [
       'Разработка концепции видеоролика',
       'Профессиональная видеосъёмка',
@@ -33,7 +33,7 @@ const services = {
   shortfilms: {
     title: 'Короткометражные фильмы',
     description: 'Полный цикл производства короткометражного кино',
-    image: '/placeholder.svg',
+    image: 'https://source.unsplash.com/random/1200x800?film,actress',
     features: [
       'Написание сценария',
       'Подбор актёров и локаций',
@@ -46,7 +46,7 @@ const services = {
   tests: {
     title: 'Модельные тесты',
     description: 'Профессиональные тестовые съёмки для оценки потенциала модели',
-    image: '/placeholder.svg',
+    image: 'https://source.unsplash.com/random/1200x800?model,test',
     features: [
       'Разноплановые образы и сценарии',
       'Оценка фотогеничности',
@@ -59,7 +59,7 @@ const services = {
   castingvideos: {
     title: 'Видеопробы',
     description: 'Профессиональные видеопробы для кастингов в кино и рекламе',
-    image: '/placeholder.svg',
+    image: 'https://source.unsplash.com/random/1200x800?actress,casting',
     features: [
       'Запись самопрезентации',
       'Работа над дикцией и подачей',
@@ -145,9 +145,10 @@ const ServicesPage = () => {
             .map(([key, service]) => (
               <Card key={key} className="overflow-hidden">
                 <img 
-                  src={service.image} 
+                  src={`https://source.unsplash.com/random/600x400?${key},model`}
                   alt={service.title}
                   className="w-full aspect-video object-cover"
+                  loading="lazy"
                 />
                 <div className="p-4">
                   <h3 className="text-lg font-medium mb-2">{service.title}</h3>
