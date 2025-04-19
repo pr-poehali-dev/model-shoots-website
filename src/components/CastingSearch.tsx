@@ -1,0 +1,197 @@
+import { useState } from 'react';
+import { Search, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
+
+interface CastingResult {
+  id: string;
+  title: string;
+  platform: string;
+  description: string;
+  date: string;
+  link: string;
+}
+
+// Демонстрационные данные
+const DEMO_RESULTS: CastingResult[] = [
+  {
+    id: '1',
+    title: 'Кастинг для рекламы косметики',
+    platform: 'CastingPro',
+    description: 'Требуются девушки 18-25 лет для съемок в рекламе новой линейки косметики. Опыт необязателен.',
+    date: '2023-10-15',
+    link: 'https://example.com/casting1'
+  },
+  {
+    id: '2',
+    title: 'Модели для fashion показа',
+    platform: 'ModelScout',
+    description: 'Приглашаем моделей для участия в сезонном показе одежды. Рост от 175 см.',
+    date: '2023-10-20',
+    link: 'https://example.com/casting2'
+  },
+  {
+    id: '3',
+    title: 'Актрисы для короткометражного фильма',
+    platform: 'FilmCasting',
+    description: 'Для съемок короткометражного фильма требуются актрисы 20-30 лет.',
+    date: '2023-10-25',
+    link: 'https://example.com/casting3'
+  }
+];
+
+const CastingSearch = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    photo: true,
+    video: true,
+    acting: true,
+    fashion: true
+  });
+  const [results, setResults] = useState<CastingResult[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSearching(true);
+    
+    // Имитация поиска с задержкой
+    setTimeout(() => {
+      // В реальном проекте здесь был бы API запрос
+      // Фильтрация демонстрационных данных по поисковому запросу
+      const filteredResults = DEMO_RESULTS.filter(
+        result => result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                 result.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      setResults(filteredResults);
+      setIsSearching(false);
+    }, 1000);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setResults([]);
+  };
+
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <form onSubmit={handleSearch} className="mb-6">
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Input
+              placeholder="Поиск кастингов..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-10"
+            />
+            {searchQuery && (
+              <button 
+                type="button"
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X size={18} />
+              </button>
+            )}
+          </div>
+          <Button type="submit" disabled={isSearching || !searchQuery} className="gap-2">
+            {isSearching ? 'Поиск...' : 'Найти'}
+            <Search size={18} />
+          </Button>
+        </div>
+
+        <div className="flex flex-wrap gap-4 mt-4">
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="photo" 
+              checked={filters.photo}
+              onCheckedChange={(checked) => 
+                setFilters({...filters, photo: checked as boolean})
+              }
+            />
+            <Label htmlFor="photo">Фотосъёмки</Label>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="video" 
+              checked={filters.video}
+              onCheckedChange={(checked) => 
+                setFilters({...filters, video: checked as boolean})
+              }
+            />
+            <Label htmlFor="video">Видеосъёмки</Label>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="acting" 
+              checked={filters.acting}
+              onCheckedChange={(checked) => 
+                setFilters({...filters, acting: checked as boolean})
+              }
+            />
+            <Label htmlFor="acting">Актёрское мастерство</Label>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="fashion" 
+              checked={filters.fashion}
+              onCheckedChange={(checked) => 
+                setFilters({...filters, fashion: checked as boolean})
+              }
+            />
+            <Label htmlFor="fashion">Модельный бизнес</Label>
+          </div>
+        </div>
+      </form>
+
+      {isSearching ? (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Поиск кастингов...</p>
+        </div>
+      ) : results.length > 0 ? (
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Результаты поиска</h2>
+          {results.map((result) => (
+            <Card key={result.id} className="p-4">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg font-medium">{result.title}</h3>
+                <span className="text-sm text-muted-foreground">
+                  {new Date(result.date).toLocaleDateString('ru-RU')}
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground mb-3">{result.description}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm bg-secondary px-2 py-1 rounded">{result.platform}</span>
+                <Button asChild variant="outline" size="sm">
+                  <a href={result.link} target="_blank" rel="noopener noreferrer">
+                    Подробнее
+                  </a>
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      ) : searchQuery && (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Кастинги не найдены. Попробуйте изменить запрос.</p>
+        </div>
+      )}
+
+      {!searchQuery && !isSearching && (
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">Введите запрос для поиска кастингов</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CastingSearch;
