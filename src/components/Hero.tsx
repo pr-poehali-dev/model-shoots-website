@@ -38,13 +38,13 @@ const Hero = () => {
           <div className="md:w-1/2 mt-8 md:mt-0">
             <div className="relative">
               <img 
-                src="https://source.unsplash.com/random/800x600?model,beauty"
+                src="/placeholder.svg"
                 alt="Модельная съёмка"
                 className="rounded-lg shadow-lg w-full h-auto"
               />
               <div className="absolute -bottom-4 -right-4 w-32 h-32 md:w-48 md:h-48 rounded-lg overflow-hidden border-4 border-background shadow-lg">
                 <img 
-                  src="https://source.unsplash.com/random/300x300?model,portrait" 
+                  src="/placeholder.svg" 
                   alt="Портрет модели"
                   className="w-full h-full object-cover"
                 />

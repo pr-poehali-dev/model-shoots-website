@@ -15,7 +15,7 @@ const ContactPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <img
-            src="https://source.unsplash.com/random/600x800?model,portrait"
+            src="/placeholder.svg"
             alt="Модельная фотография"
             className="w-full h-80 md:h-auto object-cover rounded-lg"
           />
@@ -80,17 +80,17 @@ const ContactPage = () => {
         
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4">
           <img 
-            src="https://source.unsplash.com/random/300x300?model,fashion" 
+            src="/placeholder.svg" 
             alt="Модная фотография"
             className="w-full aspect-square object-cover rounded-md"
           />
           <img 
-            src="https://source.unsplash.com/random/300x300?model,photoshoot" 
+            src="/placeholder.svg" 
             alt="Процесс съёмки"
             className="w-full aspect-square object-cover rounded-md"
           />
           <img 
-            src="https://source.unsplash.com/random/300x300?model,studio" 
+            src="/placeholder.svg" 
             alt="Студийная съёмка"
             className="w-full aspect-square object-cover rounded-md md:col-span-1 col-span-2"
           />

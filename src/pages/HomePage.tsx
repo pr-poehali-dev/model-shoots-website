@@ -10,21 +10,21 @@ const HomePage = () => {
     {
       title: 'Модельные визитки',
       description: 'Профессиональные фотосъёмки для вашего портфолио и модельных агентств.',
-      imageSrc: 'https://source.unsplash.com/random/600x400?model,portfolio',
+      imageSrc: '/placeholder.svg',
       icon: <Camera size={24} />,
       linkTo: '/services/cards'
     },
     {
       title: 'Видеоролики',
       description: 'Создание качественных видеороликов для коммерческих и личных проектов.',
-      imageSrc: 'https://source.unsplash.com/random/600x400?model,video',
+      imageSrc: '/placeholder.svg',
       icon: <Video size={24} />,
       linkTo: '/services/videos'
     },
     {
       title: 'Короткометражные фильмы',
       description: 'Полный цикл производства короткометражного кино с профессиональной командой.',
-      imageSrc: 'https://source.unsplash.com/random/600x400?film,actress',
+      imageSrc: '/placeholder.svg',
       icon: <Film size={24} />,
       linkTo: '/services/shortfilms'
     }
@@ -98,7 +98,7 @@ const HomePage = () => {
           </div>
           <div className="bg-muted p-8 rounded-lg">
             <img 
-              src="https://source.unsplash.com/random/800x600?model,training" 
+              src="/placeholder.svg" 
               alt="Обучение моделей" 
               className="w-full h-auto rounded-md"
             />

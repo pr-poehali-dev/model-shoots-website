@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, X, ExternalLink, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { Card } from '@/components/ui/card';
 
 interface CastingResult {
@@ -14,11 +13,11 @@ interface CastingResult {
   description: string;
   date: string;
   link: string;
-  image?: string;
+  image: string;
 }
 
-// Более реалистичные данные для демонстрации
-const DEMO_RESULTS: CastingResult[] = [
+// База кастингов с локальными изображениями
+const ALL_CASTINGS: CastingResult[] = [
   {
     id: '1',
     title: 'Кастинг для рекламы косметики L\'Oreal',
@@ -26,7 +25,7 @@ const DEMO_RESULTS: CastingResult[] = [
     description: 'Требуются девушки 18-25 лет для съемок в рекламе новой линейки косметики. Опыт необязателен. Оплата: от 35 000 руб.',
     date: '2023-10-15',
     link: 'https://example.com/casting1',
-    image: 'https://source.unsplash.com/random/300x200?model,beauty'
+    image: '/placeholder.svg'
   },
   {
     id: '2',
@@ -35,7 +34,7 @@ const DEMO_RESULTS: CastingResult[] = [
     description: 'Приглашаем моделей для участия в сезонном показе одежды. Рост от 175 см. Опыт работы обязателен. Оплата: от 50 000 руб.',
     date: '2023-10-20',
     link: 'https://example.com/casting2',
-    image: 'https://source.unsplash.com/random/300x200?fashion,runway'
+    image: '/placeholder.svg'
   },
   {
     id: '3',
@@ -44,7 +43,7 @@ const DEMO_RESULTS: CastingResult[] = [
     description: 'Для съемок короткометражного фильма требуются актрисы 20-30 лет. Проект для кинофестиваля. Оплата: от 25 000 руб.',
     date: '2023-10-25',
     link: 'https://example.com/casting3',
-    image: 'https://source.unsplash.com/random/300x200?actress,film'
+    image: '/placeholder.svg'
   },
   {
     id: '4',
@@ -53,55 +52,98 @@ const DEMO_RESULTS: CastingResult[] = [
     description: 'Требуются модели для фотосессии в стиле высокой моды. Возраст: 18-30 лет. Портфолио обязательно. Оплата: от 45 000 руб.',
     date: '2023-11-05',
     link: 'https://example.com/casting4',
-    image: 'https://source.unsplash.com/random/300x200?vogue,model'
+    image: '/placeholder.svg'
   },
   {
     id: '5',
-    title: 'Видеосъемка для бренда спортивной одежды',
+    title: 'Видеосъемка для бренда спортивной одежды Nike',
     platform: 'SportModels',
     description: 'Ищем девушек с атлетическим телосложением для съемок рекламы спортивной одежды. Оплата: от 40 000 руб.',
     date: '2023-11-10',
     link: 'https://example.com/casting5',
-    image: 'https://source.unsplash.com/random/300x200?sport,model'
+    image: '/placeholder.svg'
+  },
+  {
+    id: '6',
+    title: 'Фотосессия для каталога Zara',
+    platform: 'FashionFind',
+    description: 'Ищем девушек для съемок в каталоге осенней коллекции Zara. Требуемый рост: от 172 см. Оплата: от 38 000 руб.',
+    date: '2023-11-15',
+    link: 'https://example.com/casting6',
+    image: '/placeholder.svg'
+  },
+  {
+    id: '7',
+    title: 'Модели для YouTube канала о моде',
+    platform: 'DigitalModels',
+    description: 'Требуются модели для съемок в обучающих видео о моде и стиле. Опыт не обязателен. Оплата: от 3000 руб./час',
+    date: '2023-11-18',
+    link: 'https://example.com/casting7',
+    image: '/placeholder.svg'
+  },
+  {
+    id: '8',
+    title: 'Актрисы для сериала на Netflix',
+    platform: 'StarCasting',
+    description: 'Идет набор актрис для съемок в новом российском сериале на Netflix. Возраст: 20-35 лет. Оплата: от 80 000 руб.',
+    date: '2023-11-20',
+    link: 'https://example.com/casting8',
+    image: '/placeholder.svg'
+  },
+  {
+    id: '9',
+    title: 'Модели для обложки журнала Glamour',
+    platform: 'GlamourCasting',
+    description: 'Ищем яркую модель для съемок на обложке журнала Glamour. Нужен опыт работы с глянцем. Оплата: от 60 000 руб.',
+    date: '2023-11-22',
+    link: 'https://example.com/casting9',
+    image: '/placeholder.svg'
+  },
+  {
+    id: '10',
+    title: 'TikTok модели для рекламы косметики',
+    platform: 'DigitalAdModels',
+    description: 'Требуются девушки со своей аудиторией в TikTok для съемок в рекламе косметики. Оплата: от 50 000 руб. + бартер',
+    date: '2023-11-25',
+    link: 'https://example.com/casting10',
+    image: '/placeholder.svg'
   }
 ];
 
-// Имитация API для поиска кастингов в интернете
-const searchCastingsAPI = async (query: string, filters: Record<string, boolean>): Promise<CastingResult[]> => {
-  // В реальном проекте здесь был бы fetch запрос к реальному API
-  // Имитируем задержку сети
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Фильтрация по поисковому запросу и типам кастингов
-      let results = [...DEMO_RESULTS];
-      
-      if (query) {
-        results = results.filter(
-          result => result.title.toLowerCase().includes(query.toLowerCase()) ||
-                  result.description.toLowerCase().includes(query.toLowerCase())
-        );
-      }
-      
-      // Фильтрация по типам кастингов (в реальной системе)
-      if (!filters.photo) {
-        results = results.filter(result => !result.title.toLowerCase().includes('фото'));
-      }
-      
-      if (!filters.video) {
-        results = results.filter(result => !result.title.toLowerCase().includes('видео'));
-      }
-      
-      if (!filters.acting) {
-        results = results.filter(result => !result.title.toLowerCase().includes('актр'));
-      }
-      
-      if (!filters.fashion) {
-        results = results.filter(result => !result.title.toLowerCase().includes('показ') && 
-                                          !result.title.toLowerCase().includes('fashion'));
-      }
-      
-      resolve(results);
-    }, 1500); // Имитация задержки сети в 1.5 секунды
+// Расширенная функция поиска кастингов
+const searchCastings = (query: string, filters: Record<string, boolean>): CastingResult[] => {
+  if (!query && Object.values(filters).every(value => value)) {
+    // Если нет запроса и все фильтры включены, вернем все кастинги
+    return ALL_CASTINGS;
+  }
+  
+  return ALL_CASTINGS.filter(casting => {
+    // Проверка совпадения поискового запроса
+    const matchesQuery = !query || 
+      casting.title.toLowerCase().includes(query.toLowerCase()) ||
+      casting.description.toLowerCase().includes(query.toLowerCase()) ||
+      casting.platform.toLowerCase().includes(query.toLowerCase());
+    
+    // Проверка фильтров
+    const matchesPhotoFilter = filters.photo && 
+      (casting.title.toLowerCase().includes('фото') || 
+       casting.description.toLowerCase().includes('фото'));
+    
+    const matchesVideoFilter = filters.video && 
+      (casting.title.toLowerCase().includes('видео') || 
+       casting.description.toLowerCase().includes('видео'));
+    
+    const matchesActingFilter = filters.acting && 
+      (casting.title.toLowerCase().includes('актр') || 
+       casting.description.toLowerCase().includes('актр'));
+    
+    const matchesFashionFilter = filters.fashion && 
+      (casting.title.toLowerCase().includes('мод') || 
+       casting.title.toLowerCase().includes('fashion') ||
+       casting.description.toLowerCase().includes('мод'));
+    
+    // Возвращаем true, если кастинг подходит по запросу И по хотя бы одному из включенных фильтров
+    return matchesQuery && (matchesPhotoFilter || matchesVideoFilter || matchesActingFilter || matchesFashionFilter);
   });
 };
 
@@ -116,28 +158,38 @@ const CastingSearch = () => {
   const [results, setResults] = useState<CastingResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  
+  // Автоматический поиск при первом рендере для демонстрации
+  useEffect(() => {
+    handleSearch();
+  }, []);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    
     setIsSearching(true);
     setHasSearched(true);
     
-    try {
-      // Вызов "API" для поиска кастингов
-      const searchResults = await searchCastingsAPI(searchQuery, filters);
+    // Имитация задержки поиска для реалистичности
+    setTimeout(() => {
+      const searchResults = searchCastings(searchQuery, filters);
       setResults(searchResults);
-    } catch (error) {
-      console.error('Ошибка при поиске кастингов:', error);
-      // Здесь можно показать сообщение об ошибке пользователю
-    } finally {
       setIsSearching(false);
-    }
+    }, 1200);
   };
+
+  // Поиск при изменении фильтров
+  useEffect(() => {
+    if (hasSearched) {
+      handleSearch();
+    }
+  }, [filters]);
 
   const clearSearch = () => {
     setSearchQuery('');
-    setResults([]);
-    setHasSearched(false);
+    if (hasSearched) {
+      handleSearch();
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -243,17 +295,14 @@ const CastingSearch = () => {
           {results.map((result) => (
             <Card key={result.id} className="overflow-hidden">
               <div className="md:flex">
-                {result.image && (
-                  <div className="md:w-1/3 h-48 md:h-auto">
-                    <img 
-                      src={result.image} 
-                      alt={result.title} 
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                <div className={`p-5 ${result.image ? 'md:w-2/3' : 'w-full'}`}>
+                <div className="md:w-1/3 h-48 md:h-auto">
+                  <img 
+                    src={result.image} 
+                    alt={result.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 md:w-2/3">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-lg font-medium">{result.title}</h3>
                     <span className="text-sm text-muted-foreground shrink-0 ml-2">

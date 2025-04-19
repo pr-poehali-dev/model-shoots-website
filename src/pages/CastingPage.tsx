@@ -14,7 +14,7 @@ const CastingPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <img 
-          src="https://source.unsplash.com/random/600x400?casting,model" 
+          src="/placeholder.svg" 
           alt="Кастинг моделей"
           className="rounded-lg object-cover w-full h-64 md:h-auto"
         />
@@ -78,17 +78,17 @@ const CastingPage = () => {
         
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           <img 
-            src="https://source.unsplash.com/random/400x300?audition,actress" 
+            src="/placeholder.svg" 
             alt="Кастинг актрис"
             className="rounded-md w-full h-48 object-cover"
           />
           <img 
-            src="https://source.unsplash.com/random/400x300?model,selection" 
+            src="/placeholder.svg" 
             alt="Отбор моделей"
             className="rounded-md w-full h-48 object-cover"
           />
           <img 
-            src="https://source.unsplash.com/random/400x300?fashion,casting" 
+            src="/placeholder.svg" 
             alt="Модный кастинг"
             className="rounded-md w-full h-48 object-cover"
           />
